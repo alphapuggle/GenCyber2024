@@ -1,4 +1,4 @@
-Welcome to GenCyber Summer Camp 2025!  Together we are going to learn how to exploit a website that has a public vulnerability.  Lets see what else we can figure out about this website.  We also know that the website owner emailed us from admin@example.com which might come in handy later.
+Welcome to GenCyber Summer Camp 2024!  Together we are going to learn how to exploit a website that has a public vulnerability.  Lets see what else we can figure out about this website.  We also know that the website owner emailed us from admin@example.com which might come in handy later.
 
 Lets take a look at: [Download the Free Nmap Security Scanner for Linux/Mac/Windows](https://nmap.org/download.html)
 Go ahead and follow the instructions to download nmap onto your device from the website.  Once you have it installed you should be able to run it in your terminal with `nmap <command>`
