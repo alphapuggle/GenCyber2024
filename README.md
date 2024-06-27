@@ -1,21 +1,48 @@
-Welcome to GenCyber Summer Camp 2024!  Together we are going to learn how to exploit a website that has a public vulnerability.  Lets see what else we can figure out about this website.  We also know that the website owner emailed us from admin@example.com which might come in handy later.
+<h1>Welcome to GenCyber Summer Camp 2024!</h1>
+
+Together we are going to learn how to exploit a website that has a public vulnerability.  Lets see what else we can figure out about this website.  We also know that the website owner emailed us from admin@example.com which might come in handy later.
+
+<h3>The pictures were taking using Chromium, if you're using Firefox you may need to do some deeper diving</h3>
 
 Lets take a look at: [Download the Free Nmap Security Scanner for Linux/Mac/Windows](https://nmap.org/download.html)
-Go ahead and follow the instructions to download nmap onto your device from the website.  Once you have it installed you should be able to run it in your terminal with `nmap <command>`
 
-We were given an IP address that this machine is running on: `144.80.64.114` so using that information read this article: [Port Scanning Basics | Nmap Network Scanning](https://nmap.org/book/man-port-scanning-basics.html) and see what information you can gather about this site.  Don't move onto the next section until you have completed a port scan of the website and make sure to take a screenshot of the scan for your report.
+To install on your Raspberry Pis, just use `sudo apt install nmap`
+<!-- Go ahead and follow the instructions to download nmap onto your device from the website.  -->
 
-After scanning you should have discovered that ports 443 and 80 are running.  In your browser go to: http://144.80.64.114/ which is the website running on port 80 and have a look around.  After you had some time to explore you should right click and inspect the website:
+Once you have it installed you should be able to run it in your terminal with `nmap <command>`
+
+We were given an IP address that this machine is running on: `144.80.64.114` so using that information read this article: [Port Scanning Basics | Nmap Network Scanning](https://nmap.org/book/man-port-scanning-basics.html) and see what information you can gather about this site.
+<br> Don't move onto the next section until you have completed a port scan of the website and make sure to take a screenshot of the scan for your report.
+
+<details>
+    <summary>
+        After scanning you should have discovered these ports are running:
+    </summary>
+    443, 80
+</details>
+
+In your browser go to: [http://144.80.64.114/](http://144.80.64.114/), which is the website running on port 80 and have a look around.  After you had some time to explore you should right click and inspect the website:
 ![[Pasted image 20240626205001.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626205001.png)
 
 And then take a look at the applications tab and examine the cookies for the site:
 ![[Pasted image 20240626210027.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626210027.png)
+
 Notice how that table is empty, showing us that we are not logged in.  Now take a look at the network tab and take note of this service that we have running on the site:
 ![[Pasted image 20240626213842.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626213842.png)
-This login method is out of date and has known vulnerabilities associated with it which you can read about here: [CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/) Make sure to take note of this in your report as well as a screenshot of the running service.
-Now that we have a possible login method lets look and see if there are any proof's of concept attacks (POCs) for the attack or public scripts that exploit this attack.  I encourage you to do your own research about this vulnerability but for the purpose of this lab I have found us a POC that we can use: [GitHub - RandomRobbieBF/CVE-2023-2982: WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) <= 7.6.4 - Authentication Bypass](https://github.com/RandomRobbieBF/CVE-2023-2982/tree/main) Typically you would have to download and modify this file yourself but to prevent errors or anything actually malicious I have uploaded the code you will need here:
+
+This login method is out of date and has known vulnerabilities associated with it which you can read about here: [CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/)
+
+> Make sure to take note of this in your report as well as a screenshot of the running service.
+
+
+Now that we have a possible login method lets look and see if there are any proof's of concept attacks (POCs) for the attack or public scripts that exploit this attack.  I encourage you to do your own research about this vulnerability but for the purpose of this lab I have found us a POC that we can use: [GitHub - RandomRobbieBF/CVE-2023-2982: WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) <= 7.6.4 - Authentication Bypass](https://github.com/RandomRobbieBF/CVE-2023-2982/tree/main) 
+
+Typically you would have to download and modify this file yourself. To prevent errors or anything actually malicious, I have uploaded the code you will need here:
 
 create a file called `exploit.py` and put this code in it:
+
+<h3>exploit.py</h3>
+
 ```python
 import requests
 import os
@@ -106,6 +133,9 @@ if __name__ == "__main__":
 ```
 
 Create another file called `login.html` and put this code inside of it:
+
+<h3>login.html</h3>
+
 ```html
 <html>
 <head>
@@ -145,16 +175,15 @@ Create another file called `login.html` and put this code inside of it:
 
 ```
 
-Before you can run this code you will have to make sure you have python installed on your device which can be found here: [Download Python | Python.org](https://www.python.org/downloads/)
-
-After that you should put these into a txt file called `requirements.txt`:
+To use the `explot.py` file, we need to install these dependencies using pip:
 ```
 requests 
 pycryptodome
 ```
-and then run the command: `pip3 install -r requirements.txt`
 
-Make sure both files are in the same directory as you and run the following command: `python3 exploit.py -w http://144.80.64.114/ -e admin@example.com` Notice how we stole the website owners email from the initial email he sent us.
+Make sure both files are in the same directory, and `cd` to it. Once you're in the directory you can run the following command: `python3 exploit.py -w http://144.80.64.114/ -e admin@example.com` 
+
+> Notice how we stole the website owners email from the initial email he sent us.
 
 You should get terminal output that looks like this:
 ```
@@ -167,6 +196,12 @@ Now there should be a new .html file in the same directory as your script.  Open
 
 Once you are on the new site you should now see a menu open on the left which should greet you as admin meaning you have successfully logged in as an admin user on the site.  To further verify this you can go back into the cookies tab and confirm you are logged in as admin:
 ![[Pasted image 20240626205943.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626205943.png)
-Make sure to take a screenshot of this for your report.  Now that you have completed your attack take some time to do some research and write a mini report that you could give to your friend or client outlining this vulnerability.  Your report should outline what vulnerability was found, what it impacts, and how to mitigate it.  Make sure to pull information from some resources we have already seen as well, I'll list these two to start:
-[CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/)
+
+> Make sure to take a screenshot of this for your report.
+
+Now that you have completed your attack take some time to do some research and write a mini report that you could give to your friend or client outlining this vulnerability.<br>
+Your report should outline what vulnerability was found, what it impacts, and how to mitigate it.
+
+Make sure to pull information from some resources we have already seen as well, I'll list these two to start:<br>
+[CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/)<br>
 [OWASP Top Ten | OWASP Foundation](https://owasp.org/www-project-top-ten/)
