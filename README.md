@@ -180,6 +180,7 @@ To use the `explot.py` file, we need to install these dependencies using pip:
 requests 
 pycryptodome
 ```
+If you get a warning about an externally managed environment, try using `sudo apt install python3-pycryptodome` instead
 
 Make sure both files are in the same directory, and `cd` to it. Once you're in the directory you can run the following command: `python3 exploit.py -w http://144.80.64.114/ -e admin@example.com` 
 
