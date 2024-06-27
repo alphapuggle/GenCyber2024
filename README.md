@@ -6,11 +6,12 @@ Go ahead and follow the instructions to download nmap onto your device from the 
 We were given an IP address that this machine is running on: `144.80.64.114` so using that information read this article: [Port Scanning Basics | Nmap Network Scanning](https://nmap.org/book/man-port-scanning-basics.html) and see what information you can gather about this site.  Don't move onto the next section until you have completed a port scan of the website and make sure to take a screenshot of the scan for your report.
 
 After scanning you should have discovered that ports 443 and 80 are running.  In your browser go to: http://144.80.64.114/ which is the website running on port 80 and have a look around.  After you had some time to explore you should right click and inspect the website:
-![[Pasted image 20240626205001.png]]
+![[Pasted image 20240626205001.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626205001.png)
+
 And then take a look at the applications tab and examine the cookies for the site:
-![[Pasted image 20240626210027.png]]
+![[Pasted image 20240626210027.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626210027.png)
 Notice how that table is empty, showing us that we are not logged in.  Now take a look at the network tab and take note of this service that we have running on the site:
-![[Pasted image 20240626213842.png]]
+![[Pasted image 20240626213842.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626213842.png)
 This login method is out of date and has known vulnerabilities associated with it which you can read about here: [CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/) Make sure to take note of this in your report as well as a screenshot of the running service.
 Now that we have a possible login method lets look and see if there are any proof's of concept attacks (POCs) for the attack or public scripts that exploit this attack.  I encourage you to do your own research about this vulnerability but for the purpose of this lab I have found us a POC that we can use: [GitHub - RandomRobbieBF/CVE-2023-2982: WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) <= 7.6.4 - Authentication Bypass](https://github.com/RandomRobbieBF/CVE-2023-2982/tree/main) Typically you would have to download and modify this file yourself but to prevent errors or anything actually malicious I have uploaded the code you will need here:
 
@@ -165,7 +166,7 @@ To login again, open login-4358.html
 Now there should be a new .html file in the same directory as your script.  Open it up and it should take you to the website (if for some reason it takes you to localhost/127.0.0.1 just keep reopening the new html file until you return to the blog site) 
 
 Once you are on the new site you should now see a menu open on the left which should greet you as admin meaning you have successfully logged in as an admin user on the site.  To further verify this you can go back into the cookies tab and confirm you are logged in as admin:
-![[Pasted image 20240626205943.png]]
+![[Pasted image 20240626205943.png]](https://raw.githubusercontent.com/alphapuggle/GenCyber2024/main/Pasted%20image%2020240626205943.png)
 Make sure to take a screenshot of this for your report.  Now that you have completed your attack take some time to do some research and write a mini report that you could give to your friend or client outlining this vulnerability.  Your report should outline what vulnerability was found, what it impacts, and how to mitigate it.  Make sure to pull information from some resources we have already seen as well, I'll list these two to start:
 [CVE-2023-2982 : The WordPress Social Login and Register (Discord, Google, Twitter, LinkedIn) plugin for WordPress is vulnerable to authe (cvedetails.com)](https://www.cvedetails.com/cve/CVE-2023-2982/)
 [OWASP Top Ten | OWASP Foundation](https://owasp.org/www-project-top-ten/)
